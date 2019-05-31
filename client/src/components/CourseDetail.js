@@ -38,10 +38,10 @@ class CourseDetail extends Component{
 					<div className="bounds">
 						<div className="grid-100">
 							<span>
-								<a className="button" href="update-course.html">Update Course</a>
-								<a className="button" href="#">Delete Course</a>
+								<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
+								<Link className="button" to="#">Delete Course</Link>
 							</span>
-							<a className="button button-secondary" href="index.html">Return to List</a>
+							<Link className="button button-secondary" to="/courses">Return to List</Link>
 						</div>
 					</div>
 				</div>
