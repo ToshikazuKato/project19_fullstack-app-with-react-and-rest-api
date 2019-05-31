@@ -6,6 +6,9 @@ import axios from 'axios';
 import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
+import CreateCourse from './components/CreateCourse';
+import UserSignIn from './components/UserSignIn';
+import UserSignUp from './components/UserSignUp';
 
 function App() {
 
@@ -31,7 +34,10 @@ function App() {
 				<div className="bounds">
 					<Route exact path="/" render={()=> <Redirect to="/courses" />}/>
 					<Route exact path="/courses" render={() => <Courses />}/>
-					<Route exact path="/courses/:id" render={(props) => <CourseDetail {...props} />} />
+					<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
+					<Route path="/courses/create" render={ props => <CreateCourse /> } />
+					<Route path="/signin" render={ props => <UserSignIn />} />
+					<Route path="/signup" render={props => <UserSignUp />} />
 					{/* <div className="grid-33"><a className="course--module course--link" href="course-detail.html">
 						<h4 className="course--label">Course</h4>
 						<h3 className="course--title">Build a Basic Bookcase</h3>
