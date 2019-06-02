@@ -6,28 +6,28 @@ const authUser = require("./login");
 
 // GET /api/users 200 - Returns the currently authenticated user
 router.get('/', authUser ,(req,res) => {
-	
-	User.findAll({
+	console.log(req.authOkUser.id,'request');
+	console.log(authUser,'authUser');
+
+	User.findByPk(req.authOkUser.id,{
 		attributes:{
-			exclude: ['password', 'createdAt','updatedAt']
-		}
+			exclude: ['createdAt','updatedAt']
+		},
 	})
-	.then(users => {
-		if(users){
+	.then(user => {
+		if(user){
 			res.json({
-				users: users
+				user
 			});
 			res.status(200);
 		}else{
 			const err = new Error('No users');
 			err.status =400;
-			// next(err);
 			res.send(err);
 		}
 		
 	})
 	.catch(err=>{
-		// res.status(500).send(err);
 		res.status(500);
 		next(err);
 	});

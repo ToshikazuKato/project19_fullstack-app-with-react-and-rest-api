@@ -14,10 +14,9 @@ class Courses extends Component{
 	getCourses = () => {
 		axios.get('http://localhost:5000/api/courses')
 			.then(res => {
-				// console.log(res.data);
+				console.log(res.data,'courses');
 				const courses = res.data;
 				this.setState(courses);
-				console.log(this.state.courses,'sfgste');
 			})
 			.catch(err => {
 				console.log(err);

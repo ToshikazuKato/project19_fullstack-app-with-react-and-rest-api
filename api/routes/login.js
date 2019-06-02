@@ -31,7 +31,6 @@ module.exports = (req,res,next) => {
 					const err = new Error("No user found by provided emaill.");
 					err.status = 401;
 					next(err);
-
 				}
 			});
 

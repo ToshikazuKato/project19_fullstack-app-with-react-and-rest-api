@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Consumer } from './Context/UsersContext';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 
@@ -15,7 +16,6 @@ class CourseDetail extends Component{
 	}
 
 	getCourseDetail = () => {
-		console.log(this.props.match.url,'what');
 		axios.get("http://localhost:5000/api" + this.props.match.url)
 			.then(res => {
 				const course = res.data.course;
@@ -23,7 +23,7 @@ class CourseDetail extends Component{
 					course,
 					username: course.User.firstName + " " + course.User.lastName
 				});
-				console.log(course, 'sfgste');
+				console.log(this.state,'state');
 			})
 			.catch(err => {
 				console.log(err);
@@ -31,16 +31,24 @@ class CourseDetail extends Component{
 	}
 
 	render(){
+
 		return(
 
 			<div>
 				<div className="actions--bar">
 					<div className="bounds">
 						<div className="grid-100">
-							<span>
-								<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
-								<Link className="button" to="#">Delete Course</Link>
-							</span>
+							<Consumer>{ ({user}) => (
+								user.id === this.state.course.userId ? 
+									(<span>
+										<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
+										<Link className="button" to={"/courses/" + this.state.course.id + "/delete"}>Delete Course</Link>
+									</span>)
+								:
+									(
+										<span></span>
+									)
+							)}</Consumer>
 							<Link className="button button-secondary" to="/courses">Return to List</Link>
 						</div>
 					</div>
