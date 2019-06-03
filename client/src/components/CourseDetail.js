@@ -24,6 +24,7 @@ class CourseDetail extends Component{
 					username: course.User.firstName + " " + course.User.lastName
 				});
 				console.log(this.state,'state');
+				console.log(this.props,'props');
 			})
 			.catch(err => {
 				console.log(err);
@@ -39,7 +40,7 @@ class CourseDetail extends Component{
 					<div className="bounds">
 						<div className="grid-100">
 							<Consumer>{ ({user}) => (
-								user.id === this.state.course.userId ? 
+									(user.id === this.state.course.userId )? 
 									(<span>
 										<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
 										<Link className="button" to={"/courses/" + this.state.course.id + "/delete"}>Delete Course</Link>
