@@ -13,7 +13,7 @@ const Header = () => {
 					</h1>
 					{ (loggedIn) ? 
 						(<nav>
-							<span>Welcome {user.user.firstName} {user.user.lastName} !</span>
+							<span>Welcome {user.firstName} {user.lastName} !</span>
 							<Link className="signout" to="/signout" onClick={actions.signout}>Sign Out</Link>
 						</nav>)
 						:

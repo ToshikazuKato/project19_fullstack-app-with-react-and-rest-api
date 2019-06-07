@@ -10,7 +10,7 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
-import Provider from './components/Context/UsersContext/Provider';
+import UsersContext from './components/Context/UsersContext';
 
 
 class App extends Component {
@@ -21,7 +21,7 @@ class App extends Component {
 		loggedIn: false,
 	}
 
-	handleSignIn = (e, user) => {
+	handleSignIn = (e,user) => {
 		e.preventDefault();
 		//Set Authorization header
 		axios.get("http://localhost:5000/api/users",
@@ -58,7 +58,7 @@ class App extends Component {
 
   render(){
   return (
-	  <Provider value={{
+	  <UsersContext.Provider value={{
 					user:this.state.user.user,
 					loggedIn:this.state.loggedIn,
 					actions:{
@@ -83,7 +83,7 @@ class App extends Component {
 				</div>
 			</div>
 		</div>
-	  </Provider>
+	  </UsersContext.Provider>
   );}
 }
 
