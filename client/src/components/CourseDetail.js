@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Consumer } from './Context/UsersContext';
+import UsersContext from './Context/UsersContext';
 import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 
@@ -39,7 +39,7 @@ class CourseDetail extends Component{
 				<div className="actions--bar">
 					<div className="bounds">
 						<div className="grid-100">
-							<Consumer>{ ({user}) => (
+							<UsersContext.Consumer>{ ({user}) => (
 									(user.id === this.state.course.userId )? 
 									(<span>
 										<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
@@ -49,7 +49,7 @@ class CourseDetail extends Component{
 									(
 										<span></span>
 									)
-							)}</Consumer>
+							)}</UsersContext.Consumer>
 							<Link className="button button-secondary" to="/courses">Return to List</Link>
 						</div>
 					</div>

@@ -10,7 +10,7 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
-import UsersContext from './components/Context/UsersContext';
+import Provider from './components/Context/UsersContext/Provider';
 
 
 class App extends Component {
@@ -58,8 +58,8 @@ class App extends Component {
 
   render(){
   return (
-	  <UsersContext.Provider value={{
-					user:this.state.user,
+	  <Provider value={{
+					user:this.state.user.user,
 					loggedIn:this.state.loggedIn,
 					actions:{
 						signin:this.handleSignIn.bind(this),
@@ -83,7 +83,7 @@ class App extends Component {
 				</div>
 			</div>
 		</div>
-	  </UsersContext.Provider>
+	  </Provider>
   );}
 }
 
