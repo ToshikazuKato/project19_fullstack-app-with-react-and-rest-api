@@ -14,7 +14,6 @@ class Courses extends Component{
 	getCourses = () => {
 		axios.get('http://localhost:5000/api/courses')
 			.then(res => {
-				console.log(res.data,'courses');
 				const courses = res.data;
 				this.setState(courses);
 			})
@@ -26,7 +25,6 @@ class Courses extends Component{
 	render(){
 		return(
 			<div className="bounds">
-
 				{
 					this.state.courses.map( (course,index) => (
 					 <div className="grid-33" key={index}>

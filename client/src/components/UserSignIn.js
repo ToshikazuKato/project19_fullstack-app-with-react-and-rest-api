@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {Consumer} from './Context/UsersContext';
-import axios from 'axios';
+import { Consumer } from './Context/UsersContext';
 
 class UserSignIn extends Component
 {
@@ -26,7 +25,7 @@ class UserSignIn extends Component
 					<h1>Sign In</h1>
 					<div>
 							
-						<form onSubmit={ e => actions.signin(e, this.state)} >
+						<form onSubmit={ e => actions.signin(e,this.state)} >
 							<div>
 								<input id="emailAddress" 
 									name="emailAddress"

@@ -12,23 +12,42 @@ class CourseDetail extends Component{
 	};
 
 	componentDidMount(){
+		console.log('from course detail');
 		this.getCourseDetail();
 	}
 
 	getCourseDetail = () => {
-		axios.get("http://localhost:5000/api" + this.props.match.url)
+		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
 				const course = res.data.course;
 				this.setState({
 					course,
 					username: course.User.firstName + " " + course.User.lastName
 				});
-				console.log(this.state,'state');
-				console.log(this.props,'props');
 			})
 			.catch(err => {
 				console.log(err);
 			});
+	}
+
+	handleDelete = (e,emailAddress,password,signin) => {
+		e.preventDefault();
+
+		axios("http://localhost:5000/api/courses/" + this.props.match.params.id,
+		{	method:'DELETE',
+			auth:{
+				username:emailAddress,
+				password:password
+			}
+		})
+		.then(res => {
+			console.log(res,'res');
+			signin(null,{emailAddress,password});
+		})
+		.catch(err => {
+			console.log(err,'err');
+		});
+
 	}
 
 	render(){
@@ -39,12 +58,14 @@ class CourseDetail extends Component{
 				<div className="actions--bar">
 					<div className="bounds">
 						<div className="grid-100">
-							<UsersContext.Consumer>{ ({user}) => (
-									(user.id === this.state.course.userId )? 
-									(<span>
-										<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
-										<Link className="button" to={"/courses/" + this.state.course.id + "/delete"}>Delete Course</Link>
-									</span>)
+							<UsersContext.Consumer>{ ({user, emailAddress, password, actions}) => (
+									( user && (user.id === this.state.course.userId) )? 
+									(
+										<span>
+											<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
+											<button className="button" onClick={e => this.handleDelete(e,emailAddress, password, actions.signin)}>Delete Course</button>
+										</span>
+									)
 								:
 									(
 										<span></span>

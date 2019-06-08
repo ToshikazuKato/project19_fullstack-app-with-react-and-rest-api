@@ -20,11 +20,9 @@ class UserSignUp extends Component
 		this.setState({
 			[v.name] : v.value
 		});
-		console.log(this.state,'handleinput user info');
 	}
 
 	handleSignUp = (e,signin) => {
-
 		e.preventDefault();
 
 		const { firstName,lastName,emailAddress,password,confirmPassword } = this.state;
@@ -39,12 +37,12 @@ class UserSignUp extends Component
 					if (res.status !== 201) {
 						console.log(res.status, 'error');
 					} else {
-						console.log(user, 'the user has been created');
-						console.log(signin, 'the user has been created');
-						signin(e,{emailAddress,password});
+						signin(null,{emailAddress,password});
 					}
 				})
-				.catch()
+				.catch(err => {
+					console.log(err,'err');
+				})
 			console.log(this.state, 'signup user info');
 		}
 

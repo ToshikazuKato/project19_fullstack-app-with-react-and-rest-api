@@ -20,7 +20,6 @@ router.get('/',(req,res) => {
 		}
 	})
 	.then(courses => {
-		// console.log(courses,'courses');
 		if(courses){
 			res.json({
 				courses: courses
@@ -42,7 +41,6 @@ router.get('/',(req,res) => {
 
 // GET / api / courses /: id 200 - Returns a the course(including the user that owns the course) for the provided course ID
 router.get('/:id',(req,res,next) => {
-	console.log(req.body,'aiubliydbfusinb');
 	Course.findByPk(req.params.id,{
 		include:{
 			model:User,
@@ -94,15 +92,12 @@ router.post('/', authUser ,(req,res, next)=>{
 					title : req.body.title,
 					description : req.body.description,
 					estimatedTime : req.body.estimatedTime,
-					materialsNeeded : req.body.materialsNeeded
+					materialsNeeded : req.body.materialsNeeded,
+					userId: req.authOkUser.id // userId 
 				  };
 				
-				  // set userId? foreign key
-				  newCourseInfo.userId = 2;
-
 				  Course.create(newCourseInfo)
 				  		.then(course => {
-							  console.log('Your course has been created.');
 							//   res.json(course);
 							  res.location(`/api//courses/${course.id}`);
 							//   res.location(`/${course.id}`);
@@ -128,7 +123,6 @@ router.post('/', authUser ,(req,res, next)=>{
 });
 // PUT / api / courses /: id 204 - Updates a course and returns no content
 router.put('/:id', authUser ,(req,res,next)=> {
-	
 	if (!req.body.title || !req.body.description) {
 		const err = new Error ("Title and Description are required.");
 		err.status = 400;
@@ -163,7 +157,6 @@ router.put('/:id', authUser ,(req,res,next)=> {
 				  err.status = 400;
 			  }
 			  next(err);
-
 		  });
 
 });
@@ -173,7 +166,6 @@ router.delete('/:id',authUser ,(req,res,next)=> {
 	Course.findByPk(req.params.id)
 		  .then(course => {
 			  if(course){
-				
 				  if (req.authOkUser.id === course.userId) {
 					  course.destroy();
 					  res.status(204).end();

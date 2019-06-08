@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import {Consumer} from './Context/UsersContext';
-import ReactMarkdown from 'react-markdown';
-import { publicDecrypt } from 'crypto';
+import { Consumer } from './Context/UsersContext';
 
 class UpdateCourse extends Component
 {
@@ -13,24 +11,30 @@ class UpdateCourse extends Component
 		description: "",
 		estimatedTime: "",
 		materialsNeeded: "",
+		userId :'',
 		User:{}
 	};
+
 	componentDidMount(){
+		this.getCourse();
+	}
+
+	getCourse = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
-				console.log(res.data);
-
+				console.log(res.data,'get this course');
 				this.setState({
 					id: res.data.course.id,
 					title: res.data.course.title,
 					description: res.data.course.description,
 					estimatedTime: res.data.course.estimatedTime,
 					materialsNeeded: res.data.course.materialsNeeded,
+					userId: res.data.course.userId,
 					User: res.data.course.User
 				});
-				console.log(this.state,'state chk');
+				console.log(this.state, 'state chk');
 			})
-			.catch(err=> {
+			.catch(err => {
 				console.log(err);
 			});
 	}
@@ -39,46 +43,48 @@ class UpdateCourse extends Component
 		e.preventDefault();
 		const v = e.target.value;
 		const n = e.target.name;
-		console.log(n,'n');
 		this.setState({
 			[n] : v
 		});
-		console.log(this.state);
 	}
 
-	handleSubmit = (user, loggedIn) =>{
-		console.log(user, loggedIn, 'user and login info');
-		console.log(this.state, 'state');
-		axios({
-			method:'PUT',
-			url: "http://localhost:5000/api/courses/" + this.props.match.params.id,
-			auth:{
-				emailAddress: user.emailAddress,
-				password: user.password
-			},
-			data:{
-				title:this.state.title,
-				description:this.state.description,
-				estimatedTime: this.state.estimatedTime,
-				materialsNeeded: this.state.materialsNeeded
-			}
-		})
-		.then( (res) => {
-			this.props.history.push("/courses/"+this.props.match.params.id);
-		})
-		.catch( err=> {
-			console.log(err,'fuck');
-		});
-
+	handleSubmit = (e,user,emailAddress,password,loggedIn) =>{
+		e.preventDefault();
+		console.log(e, user, emailAddress, password, loggedIn, 'params');
+		console.log(this.state,'state chk');
+		if(!loggedIn || user.id !== this.state.userId || this.state.id === 0){
+			return;
+		}
+		axios(`http://localhost:5000/api/courses/${this.props.match.params.id}`,
+			{
+				method:'PUT',
+				auth : {
+					username: emailAddress,
+					password: password
+				},
+				data:{
+					id: this.state.id,
+					title:this.state.title,
+					description:this.state.description,
+					estimatedTime: this.state.estimatedTime,
+					materialsNeeded: this.state.materialsNeeded
+				}
+			})
+			.then( res => {
+				this.props.history.push("/courses/"+this.props.match.params.id);
+			})
+			.catch( err=> {
+				console.log(err,'fuck');
+			});
 	}
 
 	render(){
 		return(
-			<Consumer>{ (user) => (
+			<Consumer>{ ({user,emailAddress,password,loggedIn}) => (
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
-						<form onSubmit={this.handleSubmit(user.user, user.loggedIn)}>
+						<form onSubmit={ e => this.handleSubmit(e, user,emailAddress,password, loggedIn)}>
 							<div className="grid-66">
 								<div className="course--header">
 									<h4 className="course--label">Course</h4>
