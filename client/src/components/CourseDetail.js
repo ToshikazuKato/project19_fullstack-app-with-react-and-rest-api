@@ -62,7 +62,7 @@ class CourseDetail extends Component{
 									( user && (user.id === this.state.course.userId) )? 
 									(
 										<span>
-											<Link className="button" to={"/courses/"+this.state.course.id+"/update"}>Update Course</Link>
+											<Link className="button" params={{ id: this.state.course.id}} to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
 											<button className="button" onClick={e => this.handleDelete(e,emailAddress, password, actions.signin)}>Delete Course</button>
 										</span>
 									)

@@ -11,6 +11,7 @@ import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UsersContext from './components/Context/UsersContext';
+import PrivateRoute from './components/PrivateRoute';
 
 
 class App extends Component {
@@ -64,6 +65,8 @@ class App extends Component {
 		console.log(this.state,"state? removed user and loggedIn status");
 	}
 
+
+
   render(){
   return (
 	  <UsersContext.Provider value={{
@@ -84,11 +87,11 @@ class App extends Component {
 					<Switch>
 						<Route exact path="/" render={()=> <Redirect to="/courses" />}/>
 						<Route exact path="/courses" render={() => <Courses />}/>
-						<Route exact path="/courses/create" render={ props => <CreateCourse {...props} /> } />
+						<PrivateRoute exact path="/courses/create" component={CreateCourse}  />
+						<PrivateRoute exact path="/courses/:id/update" component={UpdateCourse} />
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
-						<Route exact path="/courses/:id/update" render={props => <UpdateCourse {...props} />} />
-						<Route path="/signin" render={ props => <UserSignIn />} />
-						<Route path="/signup" render={props => <UserSignUp />} />
+						<Route path="/signin" render={ () => <UserSignIn />} />
+						<Route path="/signup" render={ () => <UserSignUp />} />
 						<Route exact path="/signout" render={() => <Redirect to="/courses" />} />
 					</Switch>
 				</div>
