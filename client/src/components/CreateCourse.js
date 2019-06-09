@@ -2,7 +2,7 @@ import React, { Component} from 'react';
 import axios from 'axios';
 import { Consumer } from './Context/UsersContext';
 import { Link } from 'react-router-dom';
-
+import Error from './Error';
 class CreateCourse extends Component {
 
 	state = {
@@ -10,6 +10,7 @@ class CreateCourse extends Component {
 		description: "",
 		estimatedTime: "",
 		materialsNeeded: "",
+		err:{}
 	};
 
 	handleInput = (e) => {
@@ -18,64 +19,46 @@ class CreateCourse extends Component {
 		const v = e.target.value;
 		this.setState({
 			[n]:v
+		},() => {
+			console.log(this.state,'from callback');
 		});
 	}
 
 	handleSubmit = (e, emailAddress, password,user,signin) => {
 		e.preventDefault();
-		if( !this.state.title || !this.state.description ){
-			this.showError();
-		}else{
-			axios("http://localhost:5000/api/courses", {
-				method: "POST",
-				auth: {
-					username: emailAddress,
-					password: password
-				},
-				data: {
-					title: this.state.title,
-					description: this.state.description,
-					estimatedTime: this.state.estimatedTime,
-					materialsNeeded: this.state.materialsNeeded,
-					userId: user.id,
-				}
-			})
-			.then(res => { 
-				console.log(res,'res created');
-				signin(null,{emailAddress,password});
-			})
-			.catch(err => { 
-				console.log(err,'err');
+		axios("http://localhost:5000/api/courses", {
+			method: "POST",
+			auth: {
+				username: emailAddress,
+				password: password
+			},
+			data: {
+				title: this.state.title,
+				description: this.state.description,
+				estimatedTime: this.state.estimatedTime,
+				materialsNeeded: this.state.materialsNeeded,
+				userId: user.id,
+			}
+		})
+		.then(res => { 
+			console.log(res,'res created');
+			signin(null,{emailAddress,password});
+		})
+		.catch(err => { 
+			console.log(err.response,'err');
+			this.setState({
+			err:err.response
 			});
-		}
+		});
 		console.log(this.state,'state check');
 	}
-
-	showError = () => {
-		if(!this.state.title || !this.state.description){
-			return (
-				<div>
-					<h2 className="validation--errors--label">Validation errors</h2>
-					<div className="validation-errors">
-						<ul>
-							{!this.state.title?<li>Please provide a value for "Title"</li>:''}
-							{!this.state.description?<li>Please provide a value for "Description"</li>:""}
-						</ul>
-					</div>
-				</div>
-			);	
-		}else{
-			return
-		}
-	}
-
 
 	render(){
 		return(
 			<div className="bounds course--detail">
 				<h1>Create Course</h1>
 				<div>
-				{this.showError()}
+				<Error err={this.state.err} />
 				<Consumer>{ ({emailAddress,password,user,actions}) => (
 
 						<form onSubmit={e => this.handleSubmit(e, emailAddress, password, user,actions.signin)}>

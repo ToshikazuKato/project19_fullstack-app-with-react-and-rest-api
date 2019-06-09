@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Consumer } from './Context/UsersContext';
+import Error from './Error';
 // import { renderers } from 'react-markdown';
 
 class UserSignUp extends Component
@@ -12,6 +13,7 @@ class UserSignUp extends Component
 		emailAddress:'',
 		password:'',
 		confirmPassword:'',
+		err:{}
 	};
 
 	handleInput = (e) => {
@@ -19,6 +21,8 @@ class UserSignUp extends Component
 		const v = e.target;
 		this.setState({
 			[v.name] : v.value
+		}, () => {
+			console.log(this.state, 'from callback');
 		});
 	}
 
@@ -29,19 +33,27 @@ class UserSignUp extends Component
 
 		if(password!==confirmPassword){
 			console.log('password not matched');
+			this.setState({
+				err:{data:{message:'password not matched'}}
+			}, () => {
+				console.log(this.state,'from callback npassword not matched');
+			});
 			return;
 		}else{
 			const user = { firstName, lastName, emailAddress, password};
 			axios.post("http://localhost:5000/api/users",user)
 				.then(res => {
 					if (res.status !== 201) {
-						console.log(res.status, 'error');
+						console.log('can not be happened, chk validation logic');
 					} else {
 						signin(null,{emailAddress,password});
 					}
 				})
 				.catch(err => {
 					console.log(err,'err');
+					this.setState({
+						err:err.response
+					});
 				})
 			console.log(this.state, 'signup user info');
 		}
@@ -54,6 +66,7 @@ class UserSignUp extends Component
 				<div className="grid-33 centered signin">
 					<h1>Sign Up</h1>
 					<div>
+						<Error err={this.state.err} />
 						<Consumer>{ ({actions}) => (
 							<form onSubmit={e => this.handleSignUp(e,actions.signin)}>
 								<div>
@@ -64,7 +77,7 @@ class UserSignUp extends Component
 										className="" 
 										placeholder="First Name" 
 										onChange={this.handleInput}
-										required />
+									/>
 								</div>
 								<div>
 									<input 
@@ -74,7 +87,7 @@ class UserSignUp extends Component
 										className="" 
 										placeholder="Last Name" 
 										onChange={this.handleInput}
-										required />
+										 />
 								</div>
 								<div>
 									<input 
@@ -84,7 +97,7 @@ class UserSignUp extends Component
 										className="" 
 										placeholder="Email Address" 
 										onChange={this.handleInput}
-										required />
+										/>
 								</div>
 								<div>
 									<input 
@@ -94,7 +107,7 @@ class UserSignUp extends Component
 										className="" 
 										placeholder="Password" 
 										onChange={this.handleInput}
-										required />
+										 />
 								</div>
 								<div>
 									<input 
@@ -104,7 +117,7 @@ class UserSignUp extends Component
 										className="" 
 										placeholder="Confirm Password" 
 										onChange={this.handleInput}
-										required />
+										 />
 								</div>
 								<div className="grid-100 pad-bottom">
 									<button 

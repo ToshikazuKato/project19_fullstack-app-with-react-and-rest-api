@@ -51,8 +51,9 @@ router.post('/', (req,res,next) => {
 	User.findOne({ where: { emailAddress: req.body.emailAddress}})
 		.then(email => {
 			if (email){
-				res.json({ error: 'This email is already in use.' });
-				res.status(400);
+				const err = new Error("This email is already in use.");
+				err.status = 400;
+				next(err);
 			}else{
 				const newUserInfo = {
 					firstName : req.body.firstName,

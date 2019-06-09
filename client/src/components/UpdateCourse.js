@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Consumer } from './Context/UsersContext';
-
+import Error from './Error';
 class UpdateCourse extends Component
 {
 	state = {
@@ -12,7 +12,8 @@ class UpdateCourse extends Component
 		estimatedTime: "",
 		materialsNeeded: "",
 		userId :'',
-		User:{}
+		User:{},
+		err:{},
 	};
 
 	componentDidMount(){
@@ -36,6 +37,9 @@ class UpdateCourse extends Component
 			})
 			.catch(err => {
 				console.log(err);
+				this.setState({
+					err:err.response
+				});
 			});
 	}
 
@@ -45,7 +49,10 @@ class UpdateCourse extends Component
 		const n = e.target.name;
 		this.setState({
 			[n] : v
+		}, () => {
+			console.log(this.state, 'from callback');
 		});
+		console.log(this.state,'handleInput');
 	}
 
 	handleSubmit = (e,user,emailAddress,password,loggedIn) =>{
@@ -75,6 +82,9 @@ class UpdateCourse extends Component
 			})
 			.catch( err=> {
 				console.log(err,'fuck');
+				this.setState({
+					err: err.response
+				});
 			});
 	}
 
@@ -84,6 +94,7 @@ class UpdateCourse extends Component
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
+						<Error err={this.state.err} />
 						<form onSubmit={ e => this.handleSubmit(e, user,emailAddress,password, loggedIn)}>
 							<div className="grid-66">
 								<div className="course--header">
