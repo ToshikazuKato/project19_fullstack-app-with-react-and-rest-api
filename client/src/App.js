@@ -12,6 +12,9 @@ import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
 import UsersContext from './components/Context/UsersContext';
 import PrivateRoute from './components/PrivateRoute';
+import UnhandledError from './components/UnhandledError';
+import NotFound from './components/NotFound';
+import Forbidden from './components/Forbidden';
 
 
 class App extends Component {
@@ -93,6 +96,9 @@ class App extends Component {
 						<Route path="/signin" render={ () => <UserSignIn />} />
 						<Route path="/signup" render={ () => <UserSignUp />} />
 						<Route exact path="/signout" render={() => <Redirect to="/courses" />} />
+						  <Route path="/error" component={UnhandledError} />
+						<Route path="/forbidden" component={Forbidden} />
+						<Route path="/notfound" component={NotFound} />
 					</Switch>
 				</div>
 			</div>
