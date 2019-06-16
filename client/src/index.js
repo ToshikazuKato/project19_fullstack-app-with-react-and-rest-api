@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { LastLocationProvider } from 'react-router-last-location';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
 		<BrowserRouter>
-			<App />
+			<LastLocationProvider>
+				<App />
+		</LastLocationProvider>
 		</BrowserRouter>
 , document.getElementById('root'));
 

@@ -19,6 +19,9 @@ class Courses extends Component{
 			})
 			.catch(err => {
 				console.log(err);
+				if(err.response.status === 500){
+					this.props.history.push("/error");
+				}
 			});
 	}
 

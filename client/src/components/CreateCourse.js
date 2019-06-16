@@ -49,6 +49,9 @@ class CreateCourse extends Component {
 			this.setState({
 			err:err.response
 			});
+			if(err.response.status === 500){
+				this.props.history.push("/error");
+			}
 		});
 		console.log(this.state,'state check');
 	}

@@ -12,13 +12,13 @@ class CourseDetail extends Component{
 	};
 
 	componentDidMount(){
-		console.log('from course detail');
 		this.getCourseDetail();
 	}
 
 	getCourseDetail = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
+				console.log(res,'res');
 				const course = res.data.course;
 				this.setState({
 					course,
@@ -26,7 +26,14 @@ class CourseDetail extends Component{
 				});
 			})
 			.catch(err => {
-				console.log(err);
+				console.log(err.response,'errstate');
+
+				if(err.response.status === 400){
+					this.props.history.push("/notfound");
+				}else if (err.response.status === 500){	
+					this.props.history.push("/error");
+				}
+
 			});
 	}
 
@@ -46,6 +53,11 @@ class CourseDetail extends Component{
 		})
 		.catch(err => {
 			console.log(err,'err');
+
+			if(err.response.status === 500 ){
+				this.props.history.push("/error");
+			}
+
 		});
 
 	}
@@ -62,7 +74,7 @@ class CourseDetail extends Component{
 									( user && (user.id === this.state.course.userId) )? 
 									(
 										<span>
-											<Link className="button" params={{ id: this.state.course.id}} to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
+											<Link className="button" to={"/courses/"+this.state.course.id+"/update"} >Update Course</Link>
 											<button className="button" onClick={e => this.handleDelete(e,emailAddress, password, actions.signin)}>Delete Course</button>
 										</span>
 									)

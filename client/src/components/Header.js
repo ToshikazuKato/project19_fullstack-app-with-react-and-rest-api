@@ -19,7 +19,7 @@ const Header = () => {
 						:
 						(<nav>
 							<NavLink className="signup" to="/signup">Sign Up</NavLink>
-							<NavLink className="signin" to="/signin">Sign In</NavLink>
+							<NavLink className="signin" to="/signin" >Sign In</NavLink>
 						</nav>)
 					}
 				</div>

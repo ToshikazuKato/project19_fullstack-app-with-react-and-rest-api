@@ -28,12 +28,12 @@ router.get('/',(req,res) => {
 		}else{
 			const err = new Error('There is no courses founded in database');
 			err.status = 400;
-			next(400);
+			next(400);																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																
 		}
 		
 	})
 	.catch(err => {
-		res.status(500);
+		err.status(500);
 		next(err);
 	});
 });
@@ -67,7 +67,7 @@ router.get('/:id',(req,res,next) => {
 		}
 	})
 	.catch(err => {
-		res.status(500);
+		err.status(500);
 		next(500);
 	});
 });
@@ -116,7 +116,7 @@ router.post('/', authUser ,(req,res, next)=>{
 			  }
 		  })
 		  .catch( err => {
-			  res.status(500);
+			  err.status(500);
 			  next(err);
 		  })
 

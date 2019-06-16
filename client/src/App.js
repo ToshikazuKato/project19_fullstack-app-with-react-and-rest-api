@@ -20,14 +20,9 @@ import Forbidden from './components/Forbidden';
 class App extends Component {
 	
 	// init state
-	state = {
-		user: {},
-		loggedIn: false,
-		password:'',
-		emailAddress:''
-	}
+	state = JSON.parse(window.localStorage.getItem('user'));
 
-	handleSignIn = (e,user) => {
+	handleSignIn = (e,user,from) => {
 		if(e){
 			e.preventDefault();
 		}
@@ -48,14 +43,37 @@ class App extends Component {
 						loggedIn: true,
 						password:user.password,
 						emailAddress:user.emailAddress,
+						err:{}
 					});
-					this.props.history.push("/courses");
+					window.localStorage.setItem('user',JSON.stringify({
+						user: usr,
+						loggedIn: true,
+						password:user.password,
+						emailAddress:user.emailAddress,
+						err:{}
+					}));
+					this.props.history.push(from);
 				} else {
 					//return Error
+					this.props.history.push("/notfound");
 				}
 
 			})
-			.catch();
+			.catch(err => {
+				if(err.response.status===401){
+					//login failed
+					this.setState({
+						err:err.response
+					});
+					console.log(this.state,'401');
+				} else if (err.response.status === 500) {
+					//server error
+					this.props.history.push("/error");
+				}else{
+					// something else
+					this.props.history.push("/error");
+				}
+			});
 	}
 
 	async handleSignOut(){
@@ -63,12 +81,18 @@ class App extends Component {
 			user: {},
 			loggedIn: false,
 			password:'',
-			emailAddress: ''
+			emailAddress: '',
+			prevPath:'',
+			err:{}
 		});
-		console.log(this.state,"state? removed user and loggedIn status");
 	}
 
-
+	async componentWillReceiveProps(nextProps) {
+		if (nextProps.location !== this.props.location) {
+			await this.setState({ prevPath: this.props.location.pathname,err:{} })
+		}
+		console.log(this.state,'chk');
+	}
 
   render(){
   return (
@@ -77,6 +101,8 @@ class App extends Component {
 					loggedIn:this.state.loggedIn,
 					password:this.state.password,
 					emailAddress:this.state.emailAddress,
+					prevPath:this.state.prevPath,
+					err:this.state.err,
 					actions:{
 						signin:this.handleSignIn.bind(this),
 						signout: this.handleSignOut.bind(this)
@@ -84,7 +110,7 @@ class App extends Component {
 				}}>
 		<div id="root">
 			<div>
-				<Header />
+				<Header props={this.props}/>
 				<hr />
 				<div className="bounds">
 					<Switch>
@@ -93,12 +119,13 @@ class App extends Component {
 						<PrivateRoute exact path="/courses/create" component={CreateCourse}  />
 						<PrivateRoute exact path="/courses/:id/update" component={UpdateCourse} />
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
-						<Route path="/signin" render={ () => <UserSignIn />} />
-						<Route path="/signup" render={ () => <UserSignUp />} />
+						<Route exact path="/signin" render={ (props) => <UserSignIn {...props} />} />
+						<Route exact path="/signup" render={ () => <UserSignUp />} />
 						<Route exact path="/signout" render={() => <Redirect to="/courses" />} />
-						  <Route path="/error" component={UnhandledError} />
-						<Route path="/forbidden" component={Forbidden} />
-						<Route path="/notfound" component={NotFound} />
+						<Route exact path="/error" component={UnhandledError} />
+						<Route exact path="/forbidden" component={Forbidden} />
+						<Route exact path="/notfound" component={NotFound} />
+						<Route render={() => <NotFound />} />
 					</Switch>
 				</div>
 			</div>

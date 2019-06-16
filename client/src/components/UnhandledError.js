@@ -5,7 +5,7 @@ const UnhandledError = () => {
 	return(
 		<div className="bounds">
 			<h1>ERROR!</h1>
-			<p>Sorry, we're not able to handle your request form some reason</p>
+			<p>Sorry, we're not able to handle your request for some reason</p>
 			<Link className="button button-secondary" to="/">Return Home</Link>
 		</div>
 	);

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Consumer } from './Context/UsersContext';
-
+import Error from './Error';
 class UserSignIn extends Component
 {
 	state = {
 		emailAddress:'',
 		password: '',
+		prevPath:'',
 	};
 
 	handleInput = e => {
@@ -15,17 +16,24 @@ class UserSignIn extends Component
 		this.setState({
 			[v.name] : v.value
 		});
+		
+	}
+
+	handleSubmit = (e,signin,prevPath) => {
+		const event = e;
+		e.preventDefault();
+		signin(event,this.state,prevPath);
 	}
 
 	render(){
 		return( 
-		<Consumer>{ ({actions}) =>(
+		<Consumer>{ ({actions,prevPath,err}) =>(
 			<div className="bounds">
 				<div className="grid-33 centered signin">
 					<h1>Sign In</h1>
 					<div>
-							
-						<form onSubmit={ e => actions.signin(e,this.state)} >
+						{ err ? <Error err={err} /> :"" }
+						<form onSubmit={ e => actions.signin(e,this.state,prevPath)} >
 							<div>
 								<input id="emailAddress" 
 									name="emailAddress"

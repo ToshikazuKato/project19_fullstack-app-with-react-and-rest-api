@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component , path }) => (
 				) 
 				: 
 				(
-					<Redirect to="/courses" />
+					<Redirect to="/signin" />
 				)
 			)}</Consumer>
 

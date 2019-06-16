@@ -23,22 +23,30 @@ class UpdateCourse extends Component
 	getCourse = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
-				console.log(res.data,'get this course');
-				this.setState({
-					id: res.data.course.id,
-					title: res.data.course.title,
-					description: res.data.course.description,
-					estimatedTime: res.data.course.estimatedTime,
-					materialsNeeded: res.data.course.materialsNeeded,
-					userId: res.data.course.userId,
-					User: res.data.course.User
-				});
-				console.log(this.state, 'state chk');
+				const {user} = JSON.parse(window.localStorage.getItem('user'));
+				if(res.data.course.userId === user.user.id){
+					this.setState({
+						id: res.data.course.id,
+						title: res.data.course.title,
+						description: res.data.course.description,
+						estimatedTime: res.data.course.estimatedTime,
+						materialsNeeded: res.data.course.materialsNeeded,
+						userId: res.data.course.userId,
+						User: res.data.course.User
+					});
+				}else{
+					this.props.history.push("/forbidden");
+				}
+				
 			})
 			.catch(err => {
-				console.log(err);
+				if (err.response.status === 400) {
+					this.props.history.push("/notfound");
+				} else if (err.response.status === 500) {
+					this.props.history.push("/error");
+				}
 				this.setState({
-					err:err.response
+					err: err.response
 				});
 			});
 	}
@@ -85,6 +93,9 @@ class UpdateCourse extends Component
 				this.setState({
 					err: err.response
 				});
+				if(err.response.status === 500){
+					this.props.history.push("/error");
+				}
 			});
 	}
 
@@ -156,7 +167,7 @@ class UpdateCourse extends Component
 							</div>
 						<div className="grid-100 pad-bottom">
 							<button className="button" type="submit">Update Course</button>
-							{/* <button className="button button-secondary"><Link to={"/courses/" + this.props.match.params.id}> Cancel </Link> </button> */}
+							<button className="button button-secondary"><Link to={"/courses/" + this.props.match.params.id}> Cancel </Link> </button>
 						</div>
 					</form>
 				</div>
