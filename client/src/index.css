@@ -207,13 +207,14 @@ body {
 
 /* line 13, ../sass/global.sass */
 .header {
-  background: #57496e;
+  background: #fff;
   padding: 20px 0;
   margin-bottom: 30px;
+  border-bottom:1px solid #666;
 }
 /* line 17, ../sass/global.sass */
 .header--logo {
-  color: #fff;
+  color: #666;
   font-size: 24px;
   padding: 0 15px;
   margin: 0;
@@ -221,15 +222,15 @@ body {
 }
 /* line 23, ../sass/global.sass */
 .header--logo a {
-  color: rgba(255, 255, 255, 0.5);
+  color: #666
 }
 /* line 25, ../sass/global.sass */
 .header--logo a:hover {
-  color: #fff;
+  color: #dfdfdf;
 }
 /* line 27, ../sass/global.sass */
 .header--logo .selected {
-  color: #fff;
+  color: #666
 }
 /* line 29, ../sass/global.sass */
 .header--logo .chevron {
@@ -245,18 +246,17 @@ body {
 }
 /* line 37, ../sass/global.sass */
 .header nav a {
-  color: rgba(255, 255, 255, 0.5);
+  color: #666;
   margin-left: 20px;
 }
 /* line 40, ../sass/global.sass */
 .header nav a:hover {
-  color: #fff;
+  color: #dfdfdf;
 }
 
 /* line 44, ../sass/global.sass */
 .actions--bar {
-  border-bottom: 1px solid #d5f9fe;
-  background: #f8feff;
+  border-bottom: 1px solid #666;
   padding: 20px 0;
   margin-top: -30px;
 }
@@ -282,7 +282,7 @@ h1 {
 
 /* line 61, ../sass/global.sass */
 a {
-  color: #7c689b;
+  color: #666;
   cursor: pointer;
   text-decoration: none;
   -webkit-transition: color 0.2s;
@@ -305,7 +305,7 @@ p {
 }
 
 .bounds .active{
-	color: #fff;
+	color: #666;
 }
 
 /* line 74, ../sass/global.sass */
@@ -343,14 +343,15 @@ p {
 
 /* line 102, ../sass/global.sass */
 .course--module {
-  background: #7c689b;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 2px;
   padding: 30px;
   margin-bottom: 30px;
   min-height: 107px;
   display: block;
   position: relative;
   box-sizing: border-box;
+  transition:0.3s;
 }
 /* line 2, ../sass/mixins.sass */
 .course--module:before, .course--module:after {
@@ -367,26 +368,31 @@ p {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.course--module:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	transform:translate(3px,-3px);
+}
 /* line 116, ../sass/global.sass */
 .course--label {
   font-family: "Cousine";
   font-size: 14px;
   font-weight: 100;
-  color: rgba(255, 255, 255, 0.5);
+  color: #666;
   margin-bottom: 10px;
   font-weight: normal;
 }
 /* line 123, ../sass/global.sass */
 .course--title {
   font-size: 18px;
-  color: #fff;
+  color: #666;
 }
 /* line 126, ../sass/global.sass */
 .course--link {
   display: block;
   cursor: pointer;
   text-decoration: none;
-  border: 0;
+  border: 1px solid #666;
 }
 /* line 133, ../sass/global.sass */
 .course--add--module {
@@ -634,7 +640,7 @@ textarea:focus {
 input {
   width: 100%;
   color: #332a40;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid #ccc4d8;
   padding: 15px;
   margin-bottom: 15px;
@@ -682,14 +688,14 @@ input:focus {
 
 /* line 507, ../sass/global.sass */
 .button {
-  background: #7c689b;
+  background: #666;
   color: #fff;
   font-family: "Work Sans", sans-serif;
   font-size: 18px;
   padding: 15px 30px;
   border: 0;
   margin-right: 10px;
-  border-radius: 8px;
+  border-radius: 2px;
   font-weight: bold;
   display: inline-block;
   box-sizing: border-box;
@@ -705,14 +711,14 @@ input:focus {
 }
 /* line 522, ../sass/global.sass */
 .button:not(.button-secondary):hover {
-  background: #63537d;
+  background: #dfdfdf;
 }
 
 /* line 525, ../sass/global.sass */
 .button-secondary {
-  color: #7c689b;
+  color: #666;
   background: none;
-  box-shadow: 0 0 0 2px #7c689b inset;
+  box-shadow: 0 0 0 2px #8f8f8f inset;
   -webkit-transition: box-shadow 0.2s, color 0.2s;
   -moz-transition: box-shadow 0.2s, color 0.2s;
   -ms-transition: box-shadow 0.2s, color 0.2s;
@@ -721,8 +727,8 @@ input:focus {
 }
 /* line 530, ../sass/global.sass */
 .button-secondary:hover {
-  color: #63537d;
-  box-shadow: 0 0 0 2px #63537d inset;
+  color: #8f8f8f;
+  box-shadow: 0 0 0 2px #8f8f8f inset;
 }
 
 /* adds additional padding to the bottom of an element */
@@ -737,8 +743,9 @@ input:focus {
 
 /* styles the signed in user's name in the header */
 .header nav span {
-  color: #fff;
+  color: #666;
   margin-left: 20px;
+  font-weight:bold;
 }
 
 /* styles the validation errors */
