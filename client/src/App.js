@@ -20,7 +20,16 @@ import Forbidden from './components/Forbidden';
 class App extends Component {
 	
 	// init state
-	state = JSON.parse(window.localStorage.getItem('user'));
+	state = JSON.parse(window.sessionStorage.getItem('user')) ? 
+			JSON.parse(window.sessionStorage.getItem('user')) :
+			 {
+				user: {},
+				loggedIn: false,
+				password: '',
+				emailAddress: '',
+				prevPath: '',
+				err: {}
+			};
 
 	handleSignIn = (e,user,from) => {
 		if(e){
