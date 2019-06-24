@@ -1,5 +1,5 @@
 import React from 'react';
-
+// display error message
 const Error = ( {err} ) => {
 	console.log(err,'err in Error');
 	return (

@@ -41,8 +41,10 @@ class CreateCourse extends Component {
 			}
 		})
 		.then(res => { 
-			console.log(res,'res created');
-			signin(null,{emailAddress,password});
+			// console.log(res,'res created');
+			// signin(null,{emailAddress,password});
+			this.props.history.push("/courses");
+
 		})
 		.catch(err => { 
 			console.log(err.response,'err');

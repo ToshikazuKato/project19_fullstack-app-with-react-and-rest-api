@@ -10,6 +10,7 @@ import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignUp from './components/UserSignUp';
+import UserSignOut from './components/UserSignOut';
 import UsersContext from './components/Context/UsersContext';
 import PrivateRoute from './components/PrivateRoute';
 import UnhandledError from './components/UnhandledError';
@@ -31,6 +32,7 @@ class App extends Component {
 				err: {}
 			};
 
+	// siginin logic
 	handleSignIn = (e,user,from) => {
 		if(e){
 			e.preventDefault();
@@ -46,7 +48,6 @@ class App extends Component {
 			.then(res => {
 				if (res.status === 200) {
 					const usr = res.data;
-					console.log(usr,'usr');
 					this.setState({
 						user: usr,
 						loggedIn: true,
@@ -54,7 +55,8 @@ class App extends Component {
 						emailAddress:user.emailAddress,
 						err:{}
 					});
-					window.localStorage.setItem('user',JSON.stringify({
+					// set session
+					window.sessionStorage.setItem('user',JSON.stringify({
 						user: usr,
 						loggedIn: true,
 						password:user.password,
@@ -84,7 +86,7 @@ class App extends Component {
 				}
 			});
 	}
-
+	// sigin out => init state
 	async handleSignOut(){
 		await this.setState({
 			user: {},
@@ -96,6 +98,7 @@ class App extends Component {
 		});
 	}
 
+// in order to get previous path where user was
 	async componentWillReceiveProps(nextProps) {
 		if (nextProps.location !== this.props.location) {
 			await this.setState({ prevPath: this.props.location.pathname,err:{} })
@@ -130,7 +133,7 @@ class App extends Component {
 						<Route exact path="/courses/:id" render={ props => <CourseDetail {...props} />} />
 						<Route exact path="/signin" render={ (props) => <UserSignIn {...props} />} />
 						<Route exact path="/signup" render={ () => <UserSignUp />} />
-						<Route exact path="/signout" render={() => <Redirect to="/courses" />} />
+						<Route exact path="/signout" render={() => <UserSignOut />} />
 						<Route exact path="/error" component={UnhandledError} />
 						<Route exact path="/forbidden" component={Forbidden} />
 						<Route exact path="/notfound" component={NotFound} />

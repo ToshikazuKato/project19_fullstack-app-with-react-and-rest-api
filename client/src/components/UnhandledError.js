@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+// internal server error
 const UnhandledError = () => {
-
 	return(
 		<div className="bounds">
 			<h1>ERROR!</h1>

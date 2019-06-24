@@ -2,6 +2,7 @@ import React from 'react';
 import { Consumer } from './Context/UsersContext';
 import { NavLink,Link } from 'react-router-dom';
 
+// conditionally render signin, signup, signout and user name
 const Header = () => {
 	return (
 		<Consumer>{({ user, loggedIn, actions }) =>(

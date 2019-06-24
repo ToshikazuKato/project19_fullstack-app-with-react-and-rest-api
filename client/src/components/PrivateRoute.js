@@ -1,7 +1,7 @@
 import React from 'react' ;
 import {Route, Redirect} from 'react-router-dom';
 import { Consumer } from './Context/UsersContext';
-
+// private routes for components that require authentication. => create, update, delete
 const PrivateRoute = ({ component: Component , path }) => (
 	<Route 
 		path={path}

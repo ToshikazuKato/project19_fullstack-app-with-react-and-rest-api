@@ -14,7 +14,8 @@ class CourseDetail extends Component{
 	componentDidMount(){
 		this.getCourseDetail();
 	}
-
+	
+	// get course detaills by id
 	getCourseDetail = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
@@ -26,8 +27,7 @@ class CourseDetail extends Component{
 				});
 			})
 			.catch(err => {
-				console.log(err.response,'errstate');
-
+				// console.log(err.response,'errstate');
 				if(err.response.status === 400){
 					this.props.history.push("/notfound");
 				}else if (err.response.status === 500){	
@@ -37,9 +37,9 @@ class CourseDetail extends Component{
 			});
 	}
 
+	// delete course by id
 	handleDelete = (e,emailAddress,password,signin) => {
 		e.preventDefault();
-
 		axios("http://localhost:5000/api/courses/" + this.props.match.params.id,
 		{	method:'DELETE',
 			auth:{
@@ -48,14 +48,16 @@ class CourseDetail extends Component{
 			}
 		})
 		.then(res => {
-			console.log(res,'res');
-			signin(null,{emailAddress,password});
+			this.props.history.push("/courses");
 		})
 		.catch(err => {
 			console.log(err,'err');
 
 			if(err.response.status === 500 ){
 				this.props.history.push("/error");
+			} else if (err.response.status === 403){
+				// signout, render singin and finally route to /forbidden
+				this.props.history.push("/forbidden");
 			}
 
 		});

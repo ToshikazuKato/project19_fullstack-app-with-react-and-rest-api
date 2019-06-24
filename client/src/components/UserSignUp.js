@@ -15,7 +15,7 @@ class UserSignUp extends Component
 		confirmPassword:'',
 		err:{}
 	};
-
+	// input event
 	handleInput = (e) => {
 		e.preventDefault();
 		const v = e.target;
@@ -25,8 +25,8 @@ class UserSignUp extends Component
 			console.log(this.state, 'from callback');
 		});
 	}
-
-	handleSignUp = (e,signin) => {
+	// signup logic => if success, it takes a user to previou page
+	handleSignUp = (e,signin,prevPath) => {
 		e.preventDefault();
 
 		const { firstName,lastName,emailAddress,password,confirmPassword } = this.state;
@@ -46,7 +46,7 @@ class UserSignUp extends Component
 					if (res.status !== 201) {
 						console.log('can not be happened, chk validation logic');
 					} else {
-						signin(null,{emailAddress,password});
+						signin(null,{emailAddress,password},prevPath);
 					}
 				})
 				.catch(err => {
@@ -70,8 +70,8 @@ class UserSignUp extends Component
 					<h1>Sign Up</h1>
 					<div>
 						<Error err={this.state.err} />
-						<Consumer>{ ({actions}) => (
-							<form onSubmit={e => this.handleSignUp(e,actions.signin)}>
+						<Consumer>{ ({actions,prevPath}) => (
+							<form onSubmit={e => this.handleSignUp(e,actions.signin,prevPath)}>
 								<div>
 									<input 
 										id="firstName" 

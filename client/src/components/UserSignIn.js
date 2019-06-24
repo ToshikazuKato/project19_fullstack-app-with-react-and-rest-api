@@ -9,7 +9,7 @@ class UserSignIn extends Component
 		password: '',
 		prevPath:'',
 	};
-
+	// input event
 	handleInput = e => {
 		e.preventDefault();
 		const v = e.target;
@@ -18,7 +18,7 @@ class UserSignIn extends Component
 		});
 		
 	}
-
+	// triggers signin. If err, display err message
 	handleSubmit = (e,signin,prevPath) => {
 		const event = e;
 		e.preventDefault();

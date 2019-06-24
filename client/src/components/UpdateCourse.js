@@ -19,11 +19,11 @@ class UpdateCourse extends Component
 	componentDidMount(){
 		this.getCourse();
 	}
-
+	// get request course by id
 	getCourse = () => {
 		axios.get("http://localhost:5000/api/courses/" + this.props.match.params.id)
 			.then(res => {
-				const {user} = JSON.parse(window.localStorage.getItem('user'));
+				const {user} = JSON.parse(window.sessionStorage.getItem('user'));
 				if(res.data.course.userId === user.user.id){
 					this.setState({
 						id: res.data.course.id,
@@ -37,13 +37,14 @@ class UpdateCourse extends Component
 				}else{
 					this.props.history.push("/forbidden");
 				}
-				
 			})
 			.catch(err => {
 				if (err.response.status === 400) {
 					this.props.history.push("/notfound");
 				} else if (err.response.status === 500) {
 					this.props.history.push("/error");
+				} else if (err.response.status === 403){
+					this.props.history.push("/forbidden");
 				}
 				this.setState({
 					err: err.response
@@ -51,6 +52,7 @@ class UpdateCourse extends Component
 			});
 	}
 
+	// input event
 	handleInput = e => {
 		e.preventDefault();
 		const v = e.target.value;
@@ -62,11 +64,12 @@ class UpdateCourse extends Component
 		});
 		console.log(this.state,'handleInput');
 	}
-
+	// update a course
 	handleSubmit = (e,user,emailAddress,password,loggedIn) =>{
 		e.preventDefault();
 		console.log(e, user, emailAddress, password, loggedIn, 'params');
 		console.log(this.state,'state chk');
+		// basic validation
 		if(!loggedIn || user.id !== this.state.userId || this.state.id === 0){
 			return;
 		}
@@ -86,6 +89,7 @@ class UpdateCourse extends Component
 				}
 			})
 			.then( res => {
+				// after successfully updated course, render course details
 				this.props.history.push("/courses/"+this.props.match.params.id);
 			})
 			.catch( err=> {
@@ -101,12 +105,12 @@ class UpdateCourse extends Component
 
 	render(){
 		return(
-			<Consumer>{ ({user,emailAddress,password,loggedIn}) => (
+			<Consumer>{ ({user,emailAddress,password,loggedIn,actions}) => (
 				<div className="bounds course--detail">
 					<h1>Update Course</h1>
 					<div>
 						<Error err={this.state.err} />
-						<form onSubmit={ e => this.handleSubmit(e, user,emailAddress,password, loggedIn)}>
+						<form onSubmit={ e => this.handleSubmit(e, user,emailAddress,password, loggedIn, actions.signout)}>
 							<div className="grid-66">
 								<div className="course--header">
 									<h4 className="course--label">Course</h4>
