@@ -57,6 +57,7 @@ class UpdateCourse extends Component
 		e.preventDefault();
 		const v = e.target.value;
 		const n = e.target.name;
+		console.log(v,n,'vnvnvnvnv')
 		this.setState({
 			[n] : v
 		}, () => {
@@ -93,7 +94,6 @@ class UpdateCourse extends Component
 				this.props.history.push("/courses/"+this.props.match.params.id);
 			})
 			.catch( err=> {
-				console.log(err,'fuck');
 				this.setState({
 					err: err.response
 				});
@@ -120,7 +120,7 @@ class UpdateCourse extends Component
 											name="title" 
 											type="text" 
 											className="input-title course--title--input" 
-											defaultValue={this.state.title}
+											value={this.state.title || ''}
 											onChange={this.handleInput} />
 									</div>
 									<p>By {this.state.User.firstName} {this.state.User.lastName}</p>
@@ -132,7 +132,7 @@ class UpdateCourse extends Component
 											name="description" 
 											className=""
 											placeholder={this.state.description}
-											defaultValue={this.state.description}
+											value={this.state.description || ''}
 											onChange={this.handleInput}>
 										</textarea>
 									</div>
@@ -149,7 +149,7 @@ class UpdateCourse extends Component
 													name="estimatedTime" 
 													type="text" 
 													className="course--time--input" 
-													defaultValue={this.state.estimatedTime}
+													value={this.state.estimatedTime || ''}
 													onChange={this.handleInput} />
 											</div>
 										</li>
@@ -161,7 +161,7 @@ class UpdateCourse extends Component
 													name="materialsNeeded" 
 													className="" 
 													placeholder={this.state.materialsNeeded}
-													defaultValue={this.state.materialsNeeded}
+													value={this.state.materialsNeeded || ''}
 													onChange={this.handleInput}>
 												</textarea>
 											</div>
