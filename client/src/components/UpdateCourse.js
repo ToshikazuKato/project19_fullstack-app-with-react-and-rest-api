@@ -57,7 +57,6 @@ class UpdateCourse extends Component
 		e.preventDefault();
 		const v = e.target.value;
 		const n = e.target.name;
-		console.log(v,n,'vnvnvnvnv')
 		this.setState({
 			[n] : v
 		}, () => {
